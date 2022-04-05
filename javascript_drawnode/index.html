@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Tree</title>
+    <!--Liên kết thư viện P5-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <!--Liên kết file javascript-->
+    <script src="Node.js"></script> 
+    <script src="Tree.js"></script>
+    <script src="segTree.js"></script>
+    <script src="getquery.js"></script>
+    <script src="Main.js"></script>
+    <script>
+    nums = [7,8,1,5,9,11];
+    //nums=[1,3,5,7,9,11]; 
+    let n = nums.length;
+    tree_query = new SegmentTreeRMQ();
+ 
+    // Tạo segment tree 
+    tree_query.constructST(nums, n);
+ 
+    let qs = 1; // Bắt đầu đoạn truy vấn 
+    let qe = 5; // Kết thúc đoạn truy vấn
+ 
+      // In ra giá trị nhỏ nhất trong đoạn [qs..qe]
+    if (tree_query.RMQ(n,qs,qe)==-1)
+        document.write("Invalid Input");
+    else
+        document.write(
+            "Giá trị nhỏ nhất trong đoạn [" +
+            qs +
+            ", " +
+            qe +
+            "] là = " +
+            tree_query.RMQ(n, qs, qe) +
+            "<br>"
+        );
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
