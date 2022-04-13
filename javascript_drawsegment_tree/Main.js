@@ -13,11 +13,8 @@ function setup() {
     createCanvas(width, height);
     frameRate(1);
    
-    nums = [7,8,1,5,9,11];
-    let i;
-    for( i=0;nums[i]!=null;i++){
-        
-    }
+    nums = [7,8,1,5,9,11,20,25];
+
     
     segTree = new SegmentTree(nums);
     segTree1 = segTree.buildSegmentTree();
@@ -37,7 +34,10 @@ function draw() {
     tree.draw();
     tree.draw_number_node(nums);
     noLoop();
-    tree.draw_build();
+    //Hàm visualize build đã làm xong có thể chạy thử 
+    // tree.draw_build(); 
+    //Cái này là draw build nhưng mà vẽ ra hình luôn cho dễ làm cái kia 
+    tree.draw_build_imd();
     
 }
 

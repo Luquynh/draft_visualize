@@ -81,9 +81,10 @@ class Tree {
         let mid;
         this.node_list[0].L=0;
         this.node_list[0].R=this.length_n-1;
-
+        
         for(i=1;i<=this.id_max;i++){
-            if(this.node_list[i].value!=0){
+            // console.log(this.node_list[i]);
+            if(this.node_list[i].value){
                 let id_node=this.node_list[i].id;
                 if(id_node%2==1){
                     //Node trái 
@@ -92,7 +93,7 @@ class Tree {
                     mid=((s+e)-(s+e)%2)/2;
                     this.node_list[i].L=s;
                     this.node_list[i].R=mid;
-                    console.log(this.node_list[i]);
+                    
                 }
                 else{
                     //Node phải
@@ -101,14 +102,14 @@ class Tree {
                     mid=((s+e)-(s+e)%2)/2;
                     this.node_list[i].L=mid+1;
                     this.node_list[i].R=e;
-                    console.log(this.node_list[i]);
+                    
                 }
                 
             }
 
         }
-        for(i=1;i<=this.id_max;i++){
-            if(this.node_list[i].value!=0){
+        for(i=0;i<=this.id_max;i++){
+            if(this.node_list[i].value && this.check_node_index(i)==true){
             stroke('red');
             fill('red');
             textSize(15);
@@ -120,6 +121,25 @@ class Tree {
 
         }
 }
+    create_nodelist(){
+        for(let i=0;i<=this.id_max;i++){
+            this.node_list[i]=new Node(0,i);
+        }
+        // console.log('id:'+this.id_max);
+    }
+    check_node_index(i){
+        if(i%2==1){
+            if(this.node_list[i].R==0 && this.node_list[(i-1)/2].R!=1 )
+                return false;
+
+        }
+        else
+        {
+            if(this.node_list[i].R==0 && this.node_list[(i-2)/2].R!=1)
+                return false;
+        }
+        return true;
+    }
     draw() {
         
         if(!this.root){
@@ -129,7 +149,7 @@ class Tree {
         this.drawNode(this.root);
         
     }
-
+    
     drawNode(node){
         
         if(node.left){
@@ -147,20 +167,23 @@ class Tree {
             this.create_nodelist();
             this.solan_node++;
         }
+        
         //Tạo các giá trị cho node_list
-        if(this.node_n<=this.id_max){
+        
+            if(this.node_n<=this.id_max){
             
-            this.node_list[node.id]=node;
-            this.node_n++;
-            if(this.node_n==this.id_max-1){
-                console.log(this.length_n);
-                this.draw_index_node();
-
+                this.node_list[node.id]=node;
+                this.node_n++;
             }
-        }
-        
-        
-        
+        if(this.node_n==this.id_max +1 ){
+                this.draw_index_node();
+                
+            }
+        if(this.node_n==this.id_max-1 ){
+                this.draw_index_node();
+                
+        }   
+    
         // if(this.node_n==this.id_max && this.solan_node==1){
         //     for(let i=0;i<=this.id_max;i++){
         //         console.log(this.node_list[i]);
@@ -193,8 +216,9 @@ class Tree {
     }
    
     drawLine_r(nodeA, nodeB){
-        // console.log('draworange:'+nodeB.value);
+        
         if(nodeA && nodeB && isNaN(nodeA.value)==false && isNaN(nodeB.value)==false) {
+            // console.log(nodeB.id);
             stroke('orange');
             strokeWeight(1.5);
             let ax=nodeA.x,ay=nodeA.y + nodeB.radius + 2;
@@ -202,10 +226,11 @@ class Tree {
             line(ax,ay,(ax+bx)/2,(ay+by)/2);
             stroke('orange');
             strokeWeight(1.5);
-            setTimeout(() => {line(ax,ay,bx,by);}, 500);
+            setTimeout(() => {line(ax,ay,bx,by);}, 400);
         }
     }
     drawLine(nodeA, nodeB){
+        // console.log(nodeB.id);
         if(nodeA && nodeB && isNaN(nodeA.value)==false && isNaN(nodeB.value)==false) {
             stroke('blue');
             strokeWeight(1);
@@ -232,7 +257,7 @@ class Tree {
         //draw array_index
         stroke('red');
         fill('red');
-        strokeWeight(0.7);
+        strokeWeight(0.5);
         textSize(15);
         text(index,x_node,y_max+(radius_max*2)/2+25);
     }
@@ -249,12 +274,7 @@ class Tree {
         
     }
     
-    create_nodelist(){
-        for(let i=0;i<=this.id_max;i++){
-            this.node_list[i]=new Node(0,i);
-        }
-        // console.log('id:'+this.id_max);
-    }
+   
     draw_recursive(node,nodeb,op){
         if(op==-1){
         
@@ -305,89 +325,218 @@ class Tree {
        //show các node đã được trên dãy đệ quy 
         setTimeout(() => {
                 this.drawLine(node_cha,node);
-              }, 1000);
+              }, 100);
         
         setTimeout(() => {
             this.draw_text_node(node);
-          }, 2000);
+          }, 1500);
     }
     draw_show_node2(node,node_cha){
-        
+        // console.log(node.id);
         setTimeout(() => {
                 this.draw_recursive(node_cha,node,-1);
-              }, 1000);
+              }, 100);
             
-        
+        setTimeout(()=>{
+            this.drawLine(node_cha,node);
+        },1000);
         setTimeout(() => {
             this.draw_text_node(node);
-          }, 2000);
-    }
-    draw_build(){
-        
-        
-        //đổi màu khi gọi đệ quy
-        //Hiển thị nhánh bên phải đệ quy 
-        let i_max=0;
-        for(let  i=0, n=1;this.node_list[i].childrenLeft!=0;i=i*2+1,n++){
-            setTimeout(() => {
-                this.draw_recursive(this.node_list[i],this.node_list[i].left,1);
-              }, 1500*n);
-              i_max=i;
-              if(this.node_list[i*2+1].childrenLeft==0){
-                setTimeout(() => {
-                    //dành riêng cho node cuối cùng chỉ đổi màu node 
-                    this.draw_recursive(this.node_list[i*2+1],this.node_list[i].left,0);
-                  }, 1500*(n+1));
-              }
-        }
-        i_max=2*i_max+1;
-        //hiển thị hết các node nằm bên trái 
-        for(let j=i_max,k=(i_max-1)/2+1,n=k+1;j>=1;j=(j-1)/2,k++,n++){
-            //Hiện các node trái của bên trái
-                let langoi=1;
-                if(langoi==1){
-                    // console.log('trai1:'+langoi);
-                    setTimeout(() => {
-                        this.draw_show_node1(this.node_list[j],this.node_list[(j-1)/2]);
-                    }, 2000*(k));
-                    // console.log('trai2:'+langoi);
-                    langoi=2;    
-                }
-            //Hiển thị node phải của nhánh trái 
-                if(langoi==2){
-                    // console.log('phai1:'+langoi);
-                    if(j+1!=2){
-                        setTimeout(() => {
-                         this.draw_show_node2(this.node_list[(j+1)],this.node_list[(j-1)/2]);
-                        }, 2000*n);
-                         }
-                        //  console.log('phai2:'+langoi);
-                    langoi=1;
-                }
-            
-        }
-        //Hiển thị nhánh bên phải đệ quy 
-        for(let  i=0, n=1;this.node_list[i].childrenLeft!=0;i=i*2+1,n++){
-            setTimeout(() => {
-                this.draw_recursive(this.node_list[i],this.node_list[i].left,1);
-              }, 1500*n);
-              i_max=i;
-              if(this.node_list[i*2+1].childrenLeft==0){
-                setTimeout(() => {
-                    //dành riêng cho node cuối cùng chỉ đổi màu node 
-                    this.draw_recursive(this.node_list[i*2+1],this.node_list[i].left,0);
-                  }, 1500*(n+1));
-              }
-        }
-        i_max=2*i_max+1;
-
-        
-        
+          }, 1500);
     }
     
-    // draw_getquery(){
+    draw_build(){
+        let time=0;
+        let i_max=0;
+        let time_dequy=700,time_show=1500;
+        //Hiện đệ quy của nhánh trái 
+            for(let  i=0, n=1;this.node_list[i].childrenLeft!=0;i=i*2+1,n++){
+                setTimeout(() => {
+                    this.draw_recursive(this.node_list[i],this.node_list[i].left,1);
+                }, time_dequy*n+time);
+                time+=time_dequy;
+                i_max=i;
+                if(this.node_list[i*2+1].childrenLeft==0){
+                    setTimeout(() => {
+                        //dành riêng cho node cuối cùng chỉ đổi màu node 
+                        this.draw_recursive(this.node_list[i*2+1],this.node_list[i].left,0);
+                    }, time_dequy*(n+1)+time);
+                    time+=time_dequy;
+                }
+            }
+        console.log(time);
+        i_max=2*i_max+1;
+        //hiển thị hết các node nằm bên trái 
+        
+            for(let j=i_max,k=1;j>=1;j=(j-1)/2,k++){
+                //Hiện các node trái của nhánh trái
+                if(j!=1){
+                    setTimeout(() => {
+                        this.draw_show_node1(this.node_list[(j-1)/2].left,this.node_list[(j-1)/2]);
+                    }, time_show*(k)+time);
+                    time+=time_show;
+                }
+                else{
+                    setTimeout(() => {
+                        this.draw_show_node1(this.node_list[(j-1)/2].left,this.node_list[(j-1)/2]);
+                    }, time_dequy*(k)+time);
+                    time+=time_dequy;
+                }
+                //Hiển thị node phải của nhánh trái   
+                        if(j+1!=2){
+                            if(this.node_list[j+1].left!=null){ 
+                                let index=j+1,cha_index=(j-1)/2;
+                                //vẽ tiếp đệ quy node trái của nhánh phải 
+                                    setTimeout(() => {
+                                        this.draw_recursive(this.node_list[index],this.node_list[index].left,1);
+                                    }, time_dequy*k+time);
+                                    time+=time_dequy;
+                                    k++;
+                                //node cuối cùng 
+                                    setTimeout(() => {
+                                        this.draw_recursive(this.node_list[j+1].left,this.node_list[j+1].left,0);
+                                    }, time_dequy*k+time);
+                                    time+=time_dequy;
+                                    k++;
+                                //Show node con của node phải 
+                                    setTimeout(() => {
+                                    this.draw_show_node2(this.node_list[index].left,this.node_list[index]);
+                                    }, time_dequy*k+time);
+                                    time+=time_dequy;
+                                    k++;
+                                    setTimeout(() => {
+                                        this.draw_show_node2(this.node_list[index].right,this.node_list[index]);
+                                        }, time_dequy*k+time);
+                                    time+=time_dequy;
+                                    k++;
+                                //Show node phải 
+                                setTimeout(() => {
+                                    this.draw_show_node2(this.node_list[cha_index].right,this.node_list[cha_index]);
+                                    }, time_dequy*k+time);
+                                time+=time_dequy;
+                                
+            
+                            }
+                            else{
+                                setTimeout(() => {
+                                    this.draw_show_node2(this.node_list[(j-1)/2].right,this.node_list[(j-1)/2]);
+                                    }, time_dequy*k+time);
+                                time+=time_dequy;
+                            }
+                        }  
+                       
+                
+            }
+        console.log(time);
+        //Hiển thị đệ quy nhánh phải 
+            let j_max;
+            setTimeout(() => {
+                this.draw_recursive(this.node_list[0],this.node_list[2],1);
+            }, time_dequy*3+time);
+            time+=time_dequy*3;
+            for(let  i=2, n=1;this.node_list[i].childrenLeft!=0;i=i*2+1,n++){
+                setTimeout(() => {
+                    this.draw_recursive(this.node_list[i],this.node_list[i].left,1);
+                }, time_dequy*n+time);
+                time+=time_dequy;
+                j_max=i;
+                if(this.node_list[i*2+1].childrenLeft==0){
+                    setTimeout(() => {
+                        //dành riêng cho node cuối cùng chỉ đổi màu node 
+                        this.draw_recursive(this.node_list[i*2+1],this.node_list[i].left,0);
+                    }, time_dequy*(n+1)+time);
+                    time+=time_dequy;
+                }
+            }
+            console.log(j_max);
+            j_max=2*j_max+1;
+        //Hiển thị các node nhánh phải 
+        for(let j=j_max,k=1;j>=1;j=(j-1)/2,k++){
+            //Hiện các node trái của nhánh phải
+            if(j!=2){
+                setTimeout(() => {
+                    this.draw_show_node1(this.node_list[(j-1)/2].left,this.node_list[(j-1)/2]);
+                }, time_show*(k)+time);
+                time+=time_show;
+            }
+            else{
+                setTimeout(() => {
+                    this.draw_show_node1(this.node_list[0].right,this.node_list[0]);
+                }, time_dequy*(k)+time);
+                time+=time_dequy;
+            }
+                    
+                    
+            //Hiển thị node phải của nhánh phải    
+                    if(j+1!=3){
+                        if(this.node_list[j+1].left!=null){ 
+                            let index=j+1,cha_index=(j-1)/2;
+                            //vẽ tiếp đệ quy node trái của nhánh phải 
+                                setTimeout(() => {
+                                    this.draw_recursive(this.node_list[index],this.node_list[index].left,1);
+                                }, time_dequy*k+time);
+                                time+=time_dequy;
+                                k++;
+                            //node cuối cùng 
+                                setTimeout(() => {
+                                    this.draw_recursive(this.node_list[j+1].left,this.node_list[j+1].left,0);
+                                }, time_dequy*k+time);
+                                time+=time_dequy;
+                                k++;
+                            //Show node con của node phải 
+                                setTimeout(() => {
+                                this.draw_show_node2(this.node_list[index].left,this.node_list[index]);
+                                }, time_dequy*k+time);
+                                time+=time_dequy;
+                                k++;
+                                setTimeout(() => {
+                                    this.draw_show_node2(this.node_list[index].right,this.node_list[index]);
+                                    }, time_dequy*k+time);
+                                time+=time_dequy;
+                                k++;
+                            //Show node phải 
+                            setTimeout(() => {
+                                this.draw_show_node2(this.node_list[cha_index].right,this.node_list[cha_index]);
+                                }, time_dequy+time);
+                            time+=time_dequy;
+                            
+        
+                        }
+                        else{
+                            setTimeout(() => {
+                                this.draw_show_node2(this.node_list[(j-1)/2].right,this.node_list[(j-1)/2]);
+                                }, time_dequy*k+time);
+                            time+=time_dequy;
+                        }
+                    }    
+            
+        }
+            //Hiển thị node gốc 
+            setTimeout(()=>{
+                this.drawLine(this.node_list[0],this.node_list[2]);
+            },time_dequy+time);
+            time+=time_dequy;
+            setTimeout(() => {
+                this.draw_text_node(this.node_list[0]);
+              }, time_show*4+time);
+            time+=time_show*4;
+            console.log(time);
+    }
+    draw_build_imd(){
+        for(let i=0;i<=this.id_max;i++){
+            if(this.node_list[i].value!=0){
+                this.draw_text_node(this.node_list[i]);
+                if(this.node_list[i].left)
+                    this.drawLine(this.node_list[i],this.node_list[i].left);
+                if(this.node_list[i].right)
+                    this.drawLine(this.node_list[i],this.node_list[i].right);
+            }
+            
+        }
+    }
+    draw_getquery(){
 
-    // }
+    }
     getquery(segTree,qs,qe,n){
         //text style
         // console.log(this.size);
