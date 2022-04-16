@@ -287,19 +287,34 @@ class Tree {
         }
         
     }
-    draw_getquery(answer,qs,qe){
+    draw_getquery(answer,qs,qe,op){
         //text style
         // console.log(this.size);
         textSize(20);
         fill('black');
         stroke('black');
-        strokeWeight(0.1);
+        strokeWeight(0.05);
         textAlign(CENTER, CENTER);
         // write text 
+        if(op==1){
             text('Giá trị nhỏ nhất trong đoạn từ ['+ 
             qs +
             ", " +
             qe + "] là: " +answer,  400, 665);
+        }
+        else if(op==2){
+            text('Giá trị lớn nhất trong đoạn từ ['+ 
+            qs +
+            ", " +
+            qe + "] là: " +answer,  400, 665);
+        }
+        else{
+            text('Tổng giá trị trong đoạn từ ['+ 
+            qs +
+            ", " +
+            qe + "] là: " +answer,  400, 665);
+        }
+           
     }
     draw_query_light(node_con,time,op,qs,qe){
         setTimeout(()=>{this.draw_light_node(node_con,0);},time);
@@ -685,7 +700,9 @@ class Tree {
     }
    //Tìm truy vấn của cây min segment tree 
     draw_minquery(qs,qe){
+        //hiện ra cây luôn 
         this.draw_build_imd();
+        //từ đây truy vấn 
         let check,time=0;
         let id_cantim=[-1,-1,-1,-1];
         let ar_check=[-1,-1,-1,-1];
@@ -766,12 +783,14 @@ class Tree {
             }
               
         }
-        setTimeout(()=>{this.draw_getquery(answer,qs,qe)},time+time_change);
+        setTimeout(()=>{this.draw_getquery(answer,qs,qe,1)},time+time_change);
 
     }
     //Tìm truy vấn của cây max segment tree 
     draw_maxquery(qs,qe){
-        this.draw_build_imd();
+         //hiện ra cây luôn 
+         this.draw_build_imd();
+         //từ đây truy vấn 
         let check,time=0;
         let id_cantim=[-1,-1,-1,-1];
         let ar_check=[-1,-1,-1,-1];
@@ -852,11 +871,13 @@ class Tree {
             }
               
         }
-        setTimeout(()=>{this.draw_getquery(answer,qs,qe)},time+time_change);
+        setTimeout(()=>{this.draw_getquery(answer,qs,qe,2)},time+time_change);
 
     }
     draw_sumquery(qs,qe){
-        this.draw_build_imd();
+         //hiện ra cây luôn 
+         this.draw_build_imd();
+         //từ đây truy vấn 
         let check,time=0;
         let id_cantim=[-1,-1,-1,-1];
         let ar_check=[-1,-1,-1,-1];
@@ -931,7 +952,7 @@ class Tree {
                     answer+=ar_min[i];
                 }
         }
-            setTimeout(()=>{this.draw_getquery(answer,qs,qe)},time+time_change);   
+            setTimeout(()=>{this.draw_getquery(answer,qs,qe,3)},time+time_change);   
         }
         
 
