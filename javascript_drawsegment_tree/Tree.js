@@ -419,7 +419,9 @@ class Tree {
             this.draw_text_node(node);
           }, 1500);
     }
-    
+    reset(){
+        this.draw();
+    }
     draw_build(){
         let time=0;
         let i_max=0;
@@ -698,6 +700,7 @@ class Tree {
         }
         return false;
     }
+    
    //Tìm truy vấn của cây min segment tree 
     draw_minquery(qs,qe){
         //hiện ra cây luôn 
@@ -736,7 +739,8 @@ class Tree {
                     //node thứ 2 thuộc đoạn truy vấn 
                     
                     if(id_cantim[1]==-1 && id_cantim[0]!=i && ar_check[0]==1){
-                        if(this.check_node_con(i,id_cantim[0])){
+                       let node_qs=this.node_list[id_cantim[0]].L,node_qe=this.node_list[id_cantim[0]].R;
+                        if(this.check_query(node_qs,node_qe,this.node_list[i])!=3){
                             id_cantim[1]=i;
                             ar_check[1]=2;
                         }
@@ -745,15 +749,30 @@ class Tree {
                     //node thứ 3 thuộc đoạn truy vấn 
                     
                     if(id_cantim[2]==-1 && id_cantim[1]!=i && ar_check[1]==2){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
-                            id_cantim[2]=i;
-                            ar_check[2]=3;
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
                         }
+                            if(check_t){
+                                id_cantim[2]=i;
+                                ar_check[2]=3;}
                         
                     }
                     //node thứ 4 thuộc đoạn truy vấn 
                     if(id_cantim[3]==-1 && id_cantim[2]!=i && ar_check[2]==3){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
+                        }
+                        if(check_t!=0){
                             id_cantim[3]=i;
                             ar_check[3]=4;
                         }
@@ -788,9 +807,9 @@ class Tree {
     }
     //Tìm truy vấn của cây max segment tree 
     draw_maxquery(qs,qe){
-         //hiện ra cây luôn 
-         this.draw_build_imd();
-         //từ đây truy vấn 
+        //hiện ra cây luôn 
+        this.draw_build_imd();
+        //từ đây truy vấn 
         let check,time=0;
         let id_cantim=[-1,-1,-1,-1];
         let ar_check=[-1,-1,-1,-1];
@@ -824,7 +843,8 @@ class Tree {
                     //node thứ 2 thuộc đoạn truy vấn 
                     
                     if(id_cantim[1]==-1 && id_cantim[0]!=i && ar_check[0]==1){
-                        if(this.check_node_con(i,id_cantim[0])){
+                       let node_qs=this.node_list[id_cantim[0]].L,node_qe=this.node_list[id_cantim[0]].R;
+                        if(this.check_query(node_qs,node_qe,this.node_list[i])!=3){
                             id_cantim[1]=i;
                             ar_check[1]=2;
                         }
@@ -833,15 +853,30 @@ class Tree {
                     //node thứ 3 thuộc đoạn truy vấn 
                     
                     if(id_cantim[2]==-1 && id_cantim[1]!=i && ar_check[1]==2){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
-                            id_cantim[2]=i;
-                            ar_check[2]=3;
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
                         }
+                            if(check_t){
+                                id_cantim[2]=i;
+                                ar_check[2]=3;}
                         
                     }
                     //node thứ 4 thuộc đoạn truy vấn 
                     if(id_cantim[3]==-1 && id_cantim[2]!=i && ar_check[2]==3){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
+                        }
+                        if(check_t!=0){
                             id_cantim[3]=i;
                             ar_check[3]=4;
                         }
@@ -875,9 +910,9 @@ class Tree {
 
     }
     draw_sumquery(qs,qe){
-         //hiện ra cây luôn 
-         this.draw_build_imd();
-         //từ đây truy vấn 
+        //hiện ra cây luôn 
+        this.draw_build_imd();
+        //từ đây truy vấn 
         let check,time=0;
         let id_cantim=[-1,-1,-1,-1];
         let ar_check=[-1,-1,-1,-1];
@@ -911,7 +946,8 @@ class Tree {
                     //node thứ 2 thuộc đoạn truy vấn 
                     
                     if(id_cantim[1]==-1 && id_cantim[0]!=i && ar_check[0]==1){
-                        if(this.check_node_con(i,id_cantim[0])){
+                       let node_qs=this.node_list[id_cantim[0]].L,node_qe=this.node_list[id_cantim[0]].R;
+                        if(this.check_query(node_qs,node_qe,this.node_list[i])!=3){
                             id_cantim[1]=i;
                             ar_check[1]=2;
                         }
@@ -920,15 +956,30 @@ class Tree {
                     //node thứ 3 thuộc đoạn truy vấn 
                     
                     if(id_cantim[2]==-1 && id_cantim[1]!=i && ar_check[1]==2){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
-                            id_cantim[2]=i;
-                            ar_check[2]=3;
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
                         }
+                            if(check_t){
+                                id_cantim[2]=i;
+                                ar_check[2]=3;}
                         
                     }
                     //node thứ 4 thuộc đoạn truy vấn 
                     if(id_cantim[3]==-1 && id_cantim[2]!=i && ar_check[2]==3){
-                        if(this.check_node_con(i,id_cantim[0])&& this.check_node_con(i,id_cantim[1])){
+                        let check_t=0;
+                        for(let j=0;i<4;j++){
+                            if(id_cantim[j]!=-1){
+                                let node_qs=this.node_list[id_cantim[j]].L,node_qe=this.node_list[id_cantim[j]].R;
+                                    if(this.check_query(node_qs,node_qe,this.node_list[i])==3)
+                                                check_t++;
+                                }
+                        }
+                        if(check_t!=0){
                             id_cantim[3]=i;
                             ar_check[3]=4;
                         }
@@ -946,16 +997,17 @@ class Tree {
         }
         let ar_min=[],answer=0;
         for(let i=0;i<id_cantim.length;i++){
-            // console.log(id_cantim[i]);
+            console.log(id_cantim[i]);
             if(id_cantim[i]!=-1){
                 ar_min[i]=this.node_list[id_cantim[i]].value;
+                
                     answer+=ar_min[i];
-                }
+            }
+              
         }
-            setTimeout(()=>{this.draw_getquery(answer,qs,qe,3)},time+time_change);   
-        }
-        
+        setTimeout(()=>{this.draw_getquery(answer,qs,qe,3)},time+time_change);
 
     }
-  
 
+}
+    
