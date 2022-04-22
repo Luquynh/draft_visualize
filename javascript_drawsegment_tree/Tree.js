@@ -552,7 +552,6 @@ class Tree {
                     this.draw_recursive(this.node_list[i],this.node_list[i].left,1);
                 }, time_dequy*n+time);
                 time+=time_dequy;
-                
                 j_max=i;
                 if(this.node_list[i*2+1].childrenLeft==0){
                     setTimeout(() => {
@@ -650,6 +649,19 @@ class Tree {
                     }    
             
         }
+        //Trường hợp nhánh phải không có node con 
+            if(isNaN(j_max)==true){
+                setTimeout(() => {
+                    this.draw_recursive(this.node_list[2],this.node_list[0],0);
+                }, time_dequy+time);
+                time+=time_dequy;
+                setTimeout(() => {
+                    this.draw_show_node1(this.node_list[0].right,this.node_list[0]);
+                }, time_dequy*(2)+time);
+                time+=time_dequy;
+                this.draw_light_annimation(this.nums_list[this.node_list[2].L],time+time_dequy*them_node);
+                                    them_node++;
+            }
             //Hiển thị node gốc 
             setTimeout(()=>{
                 this.drawLine(this.node_list[0],this.node_list[2]);
@@ -657,8 +669,8 @@ class Tree {
             time+=time_dequy;
             setTimeout(() => {
                 this.draw_text_node(this.node_list[0]);
-              }, time_show*4+time);
-            time+=time_show*4;
+              }, time_show*3+time);
+            time+=time_show*3;
             console.log(time);
             this.time_build=time;
     }
@@ -673,7 +685,7 @@ class Tree {
             }
             
         }
-        this.draw_number_text
+        
         
     }
     check_query(qs,qe,node){

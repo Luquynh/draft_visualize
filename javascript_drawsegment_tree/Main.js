@@ -15,7 +15,7 @@ function setup() {
     frameRate(1);
     
     // nums = [7,8,1,5,9,11,20,25];
-    nums=[2,4,5,7,9,10];
+    nums=[2,6,7];
 
     
     segTree = new SegmentTree(nums);
@@ -41,14 +41,13 @@ function draw() {
         tree.draw();
         tree.draw_number_node(nums);
         // tree.draw_build();
-    
-    
-    // tree.draw();
+    tree.draw_build();
+
     //qs=3, đại diện cho Left, qe=2 đại diện cho Right  //đoạn truy vấn sai không cho truy vấn   
     //if(qs<qe || qs<0 ||qe<0||qe>nums.length-1)
     //aleart()// gửi thông báo hoặc in dòng chữ ra man hinh //tự chọn 
     // setTimeout(()=>{tree.draw_minquery(0,3);},tree.time_build+3000); 
-    tree.draw_maxquery(2,4);
+    // tree.draw_maxquery(2,4);
     //truy vấn của cây sum hoặc max 
     //setTimeout(()=>{tree.draw_maxquery(1,6);},tree.time_build+3000);
     //setTimeout(()=>{tree.draw_sumquery(1,6);},tree.time_build+3000);
